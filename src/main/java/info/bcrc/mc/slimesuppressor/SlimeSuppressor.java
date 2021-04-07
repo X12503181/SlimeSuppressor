@@ -16,7 +16,7 @@ import org.bukkit.command.CommandSender;
 public final class SlimeSuppressor extends JavaPlugin implements Listener {
   private String version = this.getDescription().getVersion();
   private float spawnChance = 0;
-  private boolean spawnDisabled;
+  private boolean spawnEnabled;
   private FileConfiguration config;
   
   private void savePluginConfig() {
@@ -30,7 +30,7 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
   
   private void loadPluginConfig() {
     spawnChance = (float) config.getDouble("slime-spawn-chance");
-    spawnDisabled = config.getBoolean("slime-spawning-enabled");
+    spawnEnabled = config.getBoolean("slime-spawning-enabled");
   }
 
 
@@ -47,7 +47,7 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (cmd.getName().equalsIgnoreCase("slime")) {
       if (args.length == 0) {
-        sender.sendMessage(ChatColor.AQUA + "Slime spawning (" + Float.toString(spawnChance) + " chance) is " + (spawnDisabled ? "disabled" : "enabled"));
+        sender.sendMessage(ChatColor.AQUA + "Slime spawning (" + Float.toString(spawnChance) + " chance) is " + (spawnEnabled ? "enabled" : "disabled"));
       } else {
         if (args[0].equalsIgnoreCase("reload")) {
           reloadConfig();
@@ -56,10 +56,10 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
           loadPluginConfig();
         } else {
           if (args[0].equalsIgnoreCase("enable")) {
-            spawnDisabled = false;
+            spawnEnabled = true;
             sender.sendMessage(ChatColor.GREEN + "Slime spawning enabled");
           } else if (args[0].equalsIgnoreCase("disable")) {
-            spawnDisabled = true;
+            spawnEnabled = false;
             sender.sendMessage(ChatColor.GREEN + "Slime spawning disabled");
           } else if (args[0].equalsIgnoreCase("set")) {
             if (args.length > 1) {
@@ -79,6 +79,7 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
           } else {
             return false;
           };
+          config.set("slime-spawning-enabled", spawnEnabled);
           saveConfig();
         };
         return true;
@@ -98,14 +99,14 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
   @EventHandler
   public void onCreatureSpawn(CreatureSpawnEvent event) {
     if (event.getEntityType().getKey().getKey().equalsIgnoreCase("slime") && event.getEntity().getLocation().getY() <= 40 && event.getSpawnReason() == SpawnReason.NATURAL) {
-      if (spawnDisabled) {
-        event.setCancelled(true);
-      } else {
+      if (spawnEnabled) {
         Random random = new Random();
         float chance = random.nextFloat();
         if (chance >= spawnChance) {
           event.setCancelled(true);
         };
+      } else {
+        event.setCancelled(true);
       };
     };
   }

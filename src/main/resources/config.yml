@@ -3,7 +3,7 @@
 
 # "slime-spawn-chance" should be a number between 0 and 1 (don't use percentages).
 
-# These settings will never affect slime spawning in swamps or splitting from previously killed ones.
+# These settings will never affect slimes spawning in swamps or splitting from previously killed ones.
 
 slime-spawning-enabled: false
 slime-spawn-chance: 0.0
