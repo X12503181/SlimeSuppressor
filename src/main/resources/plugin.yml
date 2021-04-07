@@ -1,0 +1,11 @@
+name: SlimeSuppressor
+main: info.bcrc.mc.slimesuppressor.SlimeSuppressor
+version: 0.0.1
+api-version: 1.16
+author: Xenapte
+commands:
+  slime:
+    description: SlimeSuppressor plugin settings.
+    usage: /slime [enable|disable|reload] | /slime set <float>
+    permission: slimesuppressor.permission
+    permission-message: You don't have permission <slimesuppressor.permission>! 
