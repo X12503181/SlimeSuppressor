@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -46,7 +47,7 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (cmd.getName().equalsIgnoreCase("slime")) {
       if (args.length == 0) {
-        sender.sendMessage(ChatColor.YELLOW + "Slime spawning (" + Float.toString(spawnChance) + " chance) is " + (spawnDisabled ? "disabled" : "enabled"));
+        sender.sendMessage(ChatColor.AQUA + "Slime spawning (" + Float.toString(spawnChance) + " chance) is " + (spawnDisabled ? "disabled" : "enabled"));
       } else {
         if (args[0].equalsIgnoreCase("reload")) {
           reloadConfig();
@@ -71,6 +72,7 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
                 throw e;
               };
               config.set("slime-spawn-chance", spawnChance);
+              sender.sendMessage(ChatColor.GREEN + "Slime spawning chance set to " + Float.toString(spawnChance));
             } else {
               sender.sendMessage("Usage: /slime set <float>");
             };
@@ -95,7 +97,7 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
 
   @EventHandler
   public void onCreatureSpawn(CreatureSpawnEvent event) {
-    if (event.getEntityType().getKey().getKey().equalsIgnoreCase("slime") && event.getEntity().getLocation().getY() <= 40) {
+    if (event.getEntityType().getKey().getKey().equalsIgnoreCase("slime") && event.getEntity().getLocation().getY() <= 40 && event.getSpawnReason() == SpawnReason.NATURAL) {
       if (spawnDisabled) {
         event.setCancelled(true);
       } else {

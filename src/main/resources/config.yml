@@ -1,7 +1,9 @@
 # Note: "slime-spawning-enabled" will override "slime-spawn-chance".
-# If the former is set to false then slimes will never spawn at all no matter how the latter is set.
+# If the former is set to false then slimes will not spawn at all no matter how the latter is set.
 
 # "slime-spawn-chance" should be a number between 0 and 1 (don't use percentages).
+
+# These settings will never affect slime spawning in swamps or splitting from previously killed ones.
 
 slime-spawning-enabled: false
 slime-spawn-chance: 0.0

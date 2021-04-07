@@ -1,8 +1,8 @@
 # SlimeSuppressor
 
-A plugin that suppresses/disables slime spawning in slime chunks. Can be very useful in superflat worlds.
+A plugin that suppresses/disables slime spawning in slime chunks. Potentially very useful in superflat worlds.
 
-Note: other slime spawns (those spawning in swamps) will not be affected.
+Note: other slime spawns (those spawning in swamps or splitting from previously killed ones) will not be affected.
 
 ## Requirement
 
