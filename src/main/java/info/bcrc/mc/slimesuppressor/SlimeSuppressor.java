@@ -82,8 +82,8 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
           config.set("slime-spawning-enabled", spawnEnabled);
           saveConfig();
         };
-        return true;
       };
+      return true;
     };
     return false;
   }
@@ -99,15 +99,10 @@ public final class SlimeSuppressor extends JavaPlugin implements Listener {
   @EventHandler
   public void onCreatureSpawn(CreatureSpawnEvent event) {
     if (event.getEntityType().getKey().getKey().equalsIgnoreCase("slime") && event.getEntity().getLocation().getY() <= 40 && event.getSpawnReason() == SpawnReason.NATURAL) {
-      if (spawnEnabled) {
-        Random random = new Random();
-        float chance = random.nextFloat();
-        if (chance >= spawnChance) {
-          event.setCancelled(true);
-        };
-      } else {
-        event.setCancelled(true);
+      if (spawnEnabled && (new Random()).nextFloat() < spawnChance) {
+        return;
       };
+      event.setCancelled(true);
     };
   }
 }
